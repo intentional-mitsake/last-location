@@ -15,7 +15,11 @@ class lstLoc extends StatelessWidget {
           title: Text('Last Location'),
         ),
         body: Center(
-          child: Text('Last Location of Users'),
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            
+          ),
         ),
       ),
     );
