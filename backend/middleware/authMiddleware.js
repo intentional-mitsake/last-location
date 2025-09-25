@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../generated/prisma/index.js'
 import validator from 'validator'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'

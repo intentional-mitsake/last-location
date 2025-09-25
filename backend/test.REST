@@ -1,0 +1,3 @@
+
+GET http://localhost:8848/user/location?userid=user_03
+Accept: application/json

@@ -64,7 +64,11 @@ model Requests {
   //and we are identifying users involved in this instace only
   //in the user model, sentRequests is list of requests that user sent 
   //while receivedRequests is the list of requests that user received
-  
+  //The @relation attribute in the schema is the magic that links everything together.
+  //The sentRequests field on the User model uses @relation("SenderRequests"). This tells Prisma, when user is queried, we should be able to view all the requests sent by the user
+  //Instead of being actual columns, sentRequests and receivedRequests are virtual fields that Prisma creates
+
+
   //user who sent the request.
   sender          User               @relation("SenderRequests", fields: [senderId], references: [id])
   senderId        String
@@ -82,7 +86,7 @@ model Requests {
 model Log {
   id          String   @id @default(cuid())
   message     String   //descriptive message of the action.
-  
+
   user        User     @relation(fields: [userId], references: [id])
   userId      String
   
