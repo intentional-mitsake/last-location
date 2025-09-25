@@ -12,9 +12,13 @@ void main() async{
     callbackDispatcher,
     );
 
-  await Workmanager().registerOneOffTask(
+  await Workmanager().registerPeriodicTask(
     "1", 
     "fetchLocationTask",
+    frequency: const Duration(minutes: 15),
+    constraints: Constraints(
+      networkType: NetworkType.connected,//to ensure it runs only when connected to internet
+    ),
   );
 
   runApp(homeState());

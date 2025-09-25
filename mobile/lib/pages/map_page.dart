@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:async';//stream subscription
 
 class Map extends StatefulWidget {
   const Map({super.key});
@@ -13,11 +14,18 @@ class _MapState extends State<Map> {
 
   LatLng? currentPos = null;
   LatLng defaultPos = LatLng(6.5244, 3.3792); // in case we don't get location
+  StreamSubscription<Position>? positionStreamSubscription;// so that we can cancel the subscription when not needed
 
   @override
   void initState() {
     super.initState();
     handleLocationFlow(); // check and request permissions and start updates
+  }
+
+  @override
+  void dispose() {
+    positionStreamSubscription?.cancel();
+    super.dispose();
   }
 
   @override
