@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// Enum to define the possible states of a friend request.
+// This ensures consistency and prevents typos in the status field.
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model User {
+  id              String           @id @default(cuid())
+  email           String           @unique
+  username        String           @unique
+  password        String           // Hashed password for authentication.
+  
+  lastLocation    Location?
+  
+  //"sentRequests" are requests this user has sent to others.
+  //"receivedRequests" are requests this user has received from others.
+  sentRequests    Requests[]  @relation("SenderRequests")
+  receivedRequests Requests[]  @relation("ReceivedRequests")
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+//this model stores the last known coordinates for a user.
+model Location {
+  id              String           @id @default(cuid())
+  latitude        Float
+  longitude       Float
+  
+  //relation field linking a location back to a user.
+  user            User             @relation(fields: [userId], references: [id])
+  userId          String           @unique // Unique to enforce a one-to-one relationship
+  
+  updatedAt       DateTime         @updatedAt
+}
+
+//tracks who sent the request, who received it, and its current status.
+model Requests {
+  id              String             @id @default(cuid())
+
+  //the "SenderRequests" and "ReceivedRequests" are identifiers to see which particular user sent this request and which one received it
+  //keep in mind this is one instace of A request not list of all requests
+  //and we are identifying users involved in this instace only
+  //in the user model, sentRequests is list of requests that user sent 
+  //while receivedRequests is the list of requests that user received
+  
+  //user who sent the request.
+  sender          User               @relation("SenderRequests", fields: [senderId], references: [id])
+  senderId        String
+  
+  //user who received the request.
+  recipient       User               @relation("ReceivedRequests", fields: [recipientId], references: [id])
+  recipientId     String
+  
+  //status of the request (PENDING, ACCEPTED, or REJECTED).
+  status          RequestStatus @default(PENDING)
+  
+  createdAt       DateTime           @default(now())
+}
