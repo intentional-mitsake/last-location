@@ -36,6 +36,8 @@ model User {
   sentRequests    Requests[]  @relation("SenderRequests")
   receivedRequests Requests[]  @relation("ReceivedRequests")
 
+  logs            Log[]
+
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 }
@@ -75,4 +77,14 @@ model Requests {
   status          RequestStatus @default(PENDING)
   
   createdAt       DateTime           @default(now())
+}
+
+model Log {
+  id          String   @id @default(cuid())
+  message     String   //descriptive message of the action.
+  
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  
+  createdAt   DateTime @default(now())
 }
