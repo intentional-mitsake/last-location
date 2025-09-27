@@ -1,5 +1,5 @@
 import { raw } from "@prisma/client/runtime/library"
-import { getInitialData } from "../services/dbServices.js"
+import { getInitialData, updateRequestStatus, updateUserLocation } from "../services/dbServices.js"
 
 export async function formattedInitialData(req, res) {
     try{
@@ -19,10 +19,11 @@ export async function formattedInitialData(req, res) {
 
 export async function locController(req, res) {
     try{
-        const userid = req.body.userid
+        const userid = req.userId
         const lat = req.body.latitude
         const log = req.body.longitude
-        if(!userid || !location){
+        console.log(userid, lat, log)
+        if(!userid || !lat || !log){
             return res.status(400).json({ error: "User ID and location are required"})
         }
         const updatedUser = await updateUserLocation(userid, lat, log)

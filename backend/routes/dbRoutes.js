@@ -1,12 +1,13 @@
 import { Router } from "express"
-import { formattedInitialData, locController } from "../controllers/dbControllers.js"
+import { formattedInitialData, locController, requestController } from "../controllers/dbControllers.js"
+import { verifyToken } from "../middleware/tokenVefify.js"
 
 const router = Router()
 
 router.get('/initial', formattedInitialData)
 
-router.put('/location', locController) //location update
+router.put('/location', verifyToken, locController) //location update
 
-router.put('/request', locController) //request status update
+router.put('/request', requestController) //request status update
 
 export default router
