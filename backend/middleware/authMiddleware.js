@@ -27,31 +27,7 @@ export async function tokenVerification(req, res, next) {
         })
 }
 
-export async function onAcces(req, res, next) {
-    try{
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
-        if(!token){ return res.status(404).json({error: "Token Not Found"})}
-        const session = await prisma.session.findUnique({ where: { token  },})
-        if(!session){ return res.status(404).json({error: "Session Not Found"})}
-        if (session.expiresAt < new Date(Date.now())) {
-         await prisma.log.update({where: {userId: session.userId, u_token: token}, data: { logout_time: new Date(Date.now())}})
-         await prisma.session.delete({where: {token}})
-        
-         console.log("Session Ecpired")
-         return res.status(200).json({msg: "User Logged Out"})
-         } 
-         else {
-             next()
-              }
 
-        
-    }catch(err){
-        console.log(err)
-        return res.status(500).json(err.message || 'Internal Server Error')
-    }
-    
-}
 
 
 

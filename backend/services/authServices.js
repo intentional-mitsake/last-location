@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { PrismaClient } from '../generated/prisma/index.js'
 import dotenv from 'dotenv'
+import { revokeToken } from './revokeToken.js'
 
 dotenv.config()
 
@@ -58,9 +59,11 @@ export async function login(user, password) {
 
 export async function logout(req, res) {
     try{
-        const userid = req.userid
         const token = req.token
-        await prisma.log.update({where: {userId: userid}, data: { userId: userid, message: 'User logged out.' } })
+        if (!token) {
+            return res.status(400).json({ message: 'Missing token for logout.' })
+        }
+        await revokeToken(token)
         console.log("User Logged Out")
         return res.status(200).json({msg: "User Logged Out"})
     }catch(err){

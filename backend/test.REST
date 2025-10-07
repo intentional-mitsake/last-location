@@ -6,9 +6,13 @@ Accept: application/json
 ###PUT Request to update location
 PUT http://localhost:8848/db/location
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyXzAyIiwiaWF0IjoxNzU4OTcyNzE1LCJleHAiOjE3NjE1NjQ3MTV9.aGKBSXi1fxjsd7CpETJ9J5XS0p8Zeal3-lUu07dgAE0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyXzAyIiwiaWF0IjoxNzU5ODI1OTY3LCJleHAiOjE3NjI0MTc5Njd9.-HJExIDVYFp9n0vMpMtpw_nrX7TlPoHQtiLDLKN-t30
 
 {
   "latitude": 28.6139,
   "longitude": 77.209
 }
+###Logoout
+POST http://localhost:8848/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyXzAyIiwiaWF0IjoxNzU4OTcyNzE1LCJleHAiOjE3NjE1NjQ3MTV9.aGKBSXi1fxjsd7CpETJ9J5XS0p8Zeal3-lUu07dgAE0

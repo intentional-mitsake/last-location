@@ -4,10 +4,10 @@ import { verifyToken } from "../middleware/tokenVefify.js"
 
 const router = Router()
 
-router.get('/initial', formattedInitialData)
+router.get('/initial',verifyToken, formattedInitialData)
 
 router.put('/location', verifyToken, locController) //location update
 
-router.put('/request', requestController) //request status update
+router.put('/request', verifyToken, requestController) //request status update
 
 export default router

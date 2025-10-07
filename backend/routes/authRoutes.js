@@ -3,6 +3,7 @@ import { regCredVerification, logCredVerification } from '../controllers/authCon
 import { login_limiter, reg_limiter, logout_limiter } from '../middleware/rate_limiter.js'
 import { reqValidator, tokenVerification } from '../middleware/authMiddleware.js'
 import { logout } from '../services/authServices.js'
+import { verifyToken } from '../middleware/tokenVefify.js'
 const router = express.Router()
 
 //registration
@@ -12,6 +13,6 @@ router.post('/register', reqValidator, reg_limiter, regCredVerification)
 router.post('/login', reqValidator, login_limiter,  logCredVerification)
 
 //logout
-router.post('/logout', logout_limiter, tokenVerification,  logout)
+router.post('/logout', logout_limiter, verifyToken,  logout)
 
 export default router
