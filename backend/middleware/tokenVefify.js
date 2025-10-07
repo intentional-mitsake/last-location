@@ -13,8 +13,10 @@ export async function verifyToken(req, res, next) {
         const decoded = jwt.verify(token, process.env.Auth_Key)
         req.userId = decoded.userId
         console.log(decoded.userId)
+        //we check if this token is in the black list
         const revoked = await isTokenRevoked(token)
         if(!revoked){
+            //acces given if valid token
             req.token = token
             next()
         }

@@ -24,6 +24,7 @@ export async function revokeToken(token) {
             'true', 
             { 
                 NX: true,
+                //this makes sure it is deleted when the expiry time comes
                 EX: expiry 
             }
         )
@@ -34,12 +35,17 @@ export async function revokeToken(token) {
 }
 
 export async function isTokenRevoked(token) {
+    //so apparently this is a neccessary check which saves us from some errors
     if (!client.isReady) {
         console.warn('Redis not connected. Denying access as a safety measure.')
         return true
     }
     try {
         const result = await client.get(`${process.env.Blacklisted_Prefix}${token}`)
+        //returns true or false baseed on the given condition
+        //if the token is revoked then we will get the data and it will be true .i.e the the token is revoked
+        //if it was expired the verify used in the verification will deal with it
+        //if its not revoked this willl be null and so false
         return result !== null
     } catch (error) {
         console.error('Error checking token revocation:', error)
