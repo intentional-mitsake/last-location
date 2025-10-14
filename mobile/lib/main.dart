@@ -5,6 +5,9 @@ import 'pages/requests_pg.dart';
 import 'pages/map_page.dart';
 import 'package:workmanager/workmanager.dart';
 import 'services/bg_services.dart';
+import 'pages/auth_page.dart';
+
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +24,25 @@ void main() async{
     ),
   );
 
-  runApp(homeState());
+  runApp(AppStart());
+}
+
+
+class AppStart extends StatelessWidget {
+  const AppStart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      //set initial route to auth page
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const AuthPage(), 
+        '/home': (context) => const homeState(), //home
+      },
+    );
+  }
 }
 
 class homeState extends StatefulWidget {
